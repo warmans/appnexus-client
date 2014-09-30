@@ -1,0 +1,26 @@
+{
+    "name": "warmans/appnexus-client",
+    "type": "library",
+    "description": "Client for the AppNexus API",
+    "keywords": ["appnexus", "client"],
+    "homepage": "https://github.com/warmans/appnexus-client",
+    "authors": [
+        {
+            "name": "Stefan Warman",
+            "email": "stefan.warman@gmail.com"
+        }
+    ],
+    "support": {
+        "source": "https://github.com/warmans/appnexus-client"
+    },
+    "require": {
+        "php": ">=5.4.0",
+		"guzzle/guzzle": "~3.9.0",
+        "guzzlehttp/log-subscriber": "~1.0.0",
+        "psr/log": "~1.0.0",
+        "monolog/monolog": "1.11.0"
+    },
+    "autoload": {
+        "psr-4": { "ANClient\\": "src/" }
+    }
+}

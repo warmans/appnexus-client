@@ -19,7 +19,7 @@ class MemoryTokenCache implements TokenCacheInterface
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getToken()
     {

@@ -48,7 +48,7 @@ class Client
     /**
      * Get the underlying HTTP client
      *
-     * @return Client|\GuzzleHttp\Client
+     * @return \GuzzleHttp\Client
      */
     public function getHttpClient()
     {
@@ -57,7 +57,7 @@ class Client
 
     /**
      * @param string $method
-     * @param mixed $uri
+     * @param string $uri
      * @param array $options
      * @return mixed
      */
@@ -120,9 +120,9 @@ class Client
     }
 
     /**
-     * @param $key
+     * @param string $key
      * @param null $default
-     * @return mixed
+     * @return string
      */
     protected function getConfig($key, $default = null)
     {

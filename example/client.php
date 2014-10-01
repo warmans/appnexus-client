@@ -3,7 +3,6 @@ require_once dirname(__DIR__).'/vendor/autoload.php';
 
 use GuzzleHttp\Subscriber\Log\Formatter;
 use GuzzleHttp\Subscriber\Log\LogSubscriber;
-
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 

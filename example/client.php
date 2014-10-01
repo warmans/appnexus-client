@@ -15,4 +15,4 @@ $log->pushHandler(new StreamHandler(STDOUT, Logger::DEBUG));
 $http = new GuzzleHttp\Client();
 $http->getEmitter()->attach(new LogSubscriber($log, Formatter::DEBUG));
 
-return new \ANClient\Http($config, $http);
+return new \ANClient\Client($config, $http);

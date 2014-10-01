@@ -2,17 +2,17 @@
 namespace ANClient\Resource;
 
 /**
- * @link https://wiki.appnexus.com/display/api/Site+Service
+ * @link https://wiki.appnexus.com/display/api/Placement+Service
  * @package ANClient\Resource
  */
-class SiteResource extends AbstractResource
+class PlacementResource extends AbstractResource
 {
     /**
      * @return string
      */
     public function getIdName()
     {
-        return 'site_id';
+        return 'placement_id';  //@fixme this is used for locating children - are they any? I don't think this is valid
     }
 
     /**
@@ -20,7 +20,7 @@ class SiteResource extends AbstractResource
      */
     public function getSingularName()
     {
-        return 'site';
+        return 'placement';
     }
 
     /**
@@ -28,14 +28,6 @@ class SiteResource extends AbstractResource
      */
     public function getPluralName()
     {
-        return 'sites';
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityClassName()
-    {
-        return '\\ANClient\\Entity\\Site';
+        return 'placements';
     }
 }

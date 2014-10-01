@@ -1,6 +1,10 @@
 <?php
 namespace ANClient\Resource;
 
+/**
+ * @link https://wiki.appnexus.com/display/api/Publisher+Service
+ * @package ANClient\Resource
+ */
 class PublisherResource extends AbstractResource
 {
     /**
@@ -33,6 +37,9 @@ class PublisherResource extends AbstractResource
         return 'publishers';
     }
 
+    /**
+     * @return string
+     */
     public function getEntityClassName()
     {
         return '\\ANClient\\Entity\\Publisher';

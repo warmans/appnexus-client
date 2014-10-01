@@ -1,5 +1,5 @@
 <?php
-namespace ANClient\Http;
+namespace ANClient\Client;
 
 interface AuthCacheInterface
 {

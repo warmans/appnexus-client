@@ -1,12 +1,11 @@
 <?php
 namespace ANClient;
 
-use ANClient\Http\MemoryAuthCache;
-use ANClient\Http\AuthCacheInterface;
-use GuzzleHttp\Client;
+use ANClient\Client\MemoryAuthCache;
+use ANClient\Client\AuthCacheInterface;
 use GuzzleHttp\Message\ResponseInterface;
 
-class Http
+class Client
 {
     /**
      * @var array
@@ -25,20 +24,35 @@ class Http
     protected $httpClient;
 
     /**
-     * @var Http\AuthCacheInterface
+     * @var Client\AuthCacheInterface
      */
     protected $authCache;
 
     /**
      * @param array $config
-     * @param Client $httpClient
+     * @param \GuzzleHttp\Client $httpClient
      * @param AuthCacheInterface $authCache
+     * @throws \RuntimeException
      */
-    public function __construct(array $config, Client $httpClient, AuthCacheInterface $authCache = null)
+    public function __construct(array $config, \GuzzleHttp\Client $httpClient, AuthCacheInterface $authCache = null)
     {
+        if (empty($config['endpoint']) || empty($config['auth'])) {
+            throw new \RuntimeException('endpoint and auth elements must be specified in the config');
+        }
+
         $this->config = $config;
         $this->httpClient = $httpClient;
         $this->authCache = ($authCache) ? $authCache : new MemoryAuthCache();
+    }
+
+    /**
+     * Get the underlying HTTP client
+     *
+     * @return Client|\GuzzleHttp\Client
+     */
+    public function getHttpClient()
+    {
+        return $this->httpClient;
     }
 
     /**

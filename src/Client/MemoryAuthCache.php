@@ -1,5 +1,5 @@
 <?php
-namespace ANClient\Http;
+namespace ANClient\Client;
 
 /**
  * Just hold the auth token in memory for the duration of the scripts execution.

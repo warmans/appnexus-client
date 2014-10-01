@@ -1,7 +1,7 @@
 <?php
 namespace ANClient;
 
-use ANClient\Http;
+use ANClient\Client;
 use ANClient\Resource\AbstractResource;
 use ArrayAccess;
 
@@ -13,7 +13,7 @@ use ArrayAccess;
 class Entity implements ArrayAccess, \JsonSerializable
 {
     /**
-     * @var AbstractResourceCollection
+     * @var AbstractResource
      */
     protected $resource;
 
@@ -30,6 +30,14 @@ class Entity implements ArrayAccess, \JsonSerializable
     {
         $this->resource = $resource;
         $this->properties = $properties;
+    }
+
+    /**
+     * @return AbstractResource
+     */
+    public function getResource()
+    {
+        return $this->resource;
     }
 
     /**
@@ -99,11 +107,35 @@ class Entity implements ArrayAccess, \JsonSerializable
     }
 
     /**
+     * Duplicate entity excluding the id.
+     *
+     * @param Resource\AbstractResource $resource
+     * @return static
+     */
+    public function duplicate(AbstractResource $resource = null)
+    {
+        $properties = $this->toArray();
+        unset($properties['id']);
+        return new static($resource ?: $this->resource, $properties);
+    }
+
+    /**
      * @return array
      */
     public function jsonSerialize()
     {
         return $this->properties;
+    }
+
+    /**
+     * Shortcut to persist a resource
+     *
+     * @param array $params
+     * @return \ANClient\Entity
+     */
+    public function persist(array $params = [])
+    {
+        return $this->resource->persist($this, $params);
     }
 
     /**
@@ -116,7 +148,7 @@ class Entity implements ArrayAccess, \JsonSerializable
     public function fetchChildren(AbstractResource $childResource, array $conditions = [], $limit = 99, $offset = 0)
     {
         return $childResource->fetch(
-            array_merge($conditions, [$this->resource->getIdName() => $this['id']]),
+            array_merge([$this->resource->getIdName() => $this['id']], $conditions),
             $limit,
             $offset
         );
@@ -129,6 +161,6 @@ class Entity implements ArrayAccess, \JsonSerializable
      */
     public function fetchAllChildren(AbstractResource $childResource, array $conditions = [])
     {
-        return $childResource->fetchAll(array_merge($conditions, [$this->resource->getIdName() => $this['id']]));
+        return $childResource->fetchAll(array_merge([$this->resource->getIdName() => $this['id']], $conditions));
     }
 }

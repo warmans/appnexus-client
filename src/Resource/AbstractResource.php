@@ -2,7 +2,7 @@
 namespace ANClient\Resource;
 
 use ANClient\Entity;
-use ANClient\Http;
+use ANClient\Client;
 
 /**
  * @package ANClient\Resource
@@ -10,14 +10,14 @@ use ANClient\Http;
 abstract class AbstractResource
 {
     /**
-     * @var \ANClient\Http
+     * @var \ANClient\Client
      */
     protected $client;
 
     /**
-     * @param Http $client
+     * @param Client $client
      */
-    public function __construct(Http $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -44,9 +44,9 @@ abstract class AbstractResource
     abstract public function getPluralName();
 
     /**
-     * The class name of the entity
+     * The fully qualified class name of the entity.
      *
-     * @return mixed
+     * @return string
      */
     public function getEntityClassName()
     {
@@ -64,7 +64,7 @@ abstract class AbstractResource
     }
 
     /**
-     * @return Http
+     * @return Client
      */
     public function getClient()
     {
@@ -72,27 +72,27 @@ abstract class AbstractResource
     }
 
     /**
-     * @param \ANClient\Entity $resource
+     * @param \ANClient\Entity $entity
      * @param array $params
-     * @return AbstractEntity
+     * @return \ANClient\Entity
      */
-    public function persist(Entity $resource, $params = [])
+    public function persist(Entity $entity, $params = [])
     {
         $result = $this->client->dispatch(
             'POST',
             $this->getPath(),
-            ['query' => $params, 'json' => array($this->getSingularName() => $resource)]
+            ['query' => $params, 'json' => array($this->getSingularName() => $entity)]
         );
 
         //hydrate resource with id etc.
-        $resource->hydrate($result);
+        $entity->hydrate($result);
 
-        return $resource;
+        return $entity;
     }
 
     /**
      * @param array $properties
-     * @return mixed
+     * @return \ANClient\Entity
      */
     public function newEntity(array $properties = [])
     {
@@ -150,18 +150,18 @@ abstract class AbstractResource
 
     /**
      * @param $id
-     * @return mixed
+     * @return \ANClient\Entity
      * @throws \RuntimeException
      */
     public function fetchId($id)
     {
-        $result = $this->client->dispatch('GET', $this->getPath(), ['id' => $id]);
+        $result = $this->client->dispatch('GET', $this->getPath(), ['query' => ['id' => $id]]);
 
         if (!isset($result[$this->getSingularName()])) {
             throw new \RuntimeException($this->getSingularName().' was not found in result');
         }
 
-        return $result[$this->getSingularName()];
+        return $this->newEntity($result[$this->getSingularName()]);
     }
 
     /**
@@ -170,7 +170,7 @@ abstract class AbstractResource
      */
     public function deleteId($id)
     {
-        $this->client->dispatch('DELETE', $this->getPath(), ['id' => $id]);
+        $this->client->dispatch('DELETE', $this->getPath(), ['query' => ['id' => $id]]);
         return true;
     }
 }

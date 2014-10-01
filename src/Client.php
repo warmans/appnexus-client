@@ -19,7 +19,7 @@ class Client
     );
 
     /**
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
     protected $httpClient;
 
@@ -57,7 +57,7 @@ class Client
 
     /**
      * @param string $method
-     * @param null $uri
+     * @param mixed $uri
      * @param array $options
      * @return mixed
      */

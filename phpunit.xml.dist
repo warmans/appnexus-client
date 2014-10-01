@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+    <testsuites>
+
+        <!-- Unit tests should run anywhere -->
+        <testsuite name="unit">
+            <directory suffix="Test.php">./tests/unit</directory>
+        </testsuite>
+
+        <!-- Integration tests require running cache servers (redis/memcache) to run -->
+        <testsuite name="integration">
+            <directory suffix="Test.php">./tests/integration</directory>
+        </testsuite>
+
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src</directory>
+            <exclude>
+                <directory suffix="Interface.php">./src</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>

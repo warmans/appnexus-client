@@ -1,7 +1,7 @@
 <?php
-namespace ANClient\Client;
+namespace ANClient\Auth;
 
-interface AuthCacheInterface
+interface TokenCacheInterface
 {
     public function cacheToken($token);
 

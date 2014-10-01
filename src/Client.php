@@ -1,8 +1,8 @@
 <?php
 namespace ANClient;
 
-use ANClient\Client\MemoryAuthCache;
-use ANClient\Client\AuthCacheInterface;
+use ANClient\Auth\MemoryTokenCache;
+use ANClient\Auth\TokenCacheInterface;
 use GuzzleHttp\Message\ResponseInterface;
 
 class Client
@@ -24,17 +24,17 @@ class Client
     protected $httpClient;
 
     /**
-     * @var Client\AuthCacheInterface
+     * @var Auth\TokenCacheInterface
      */
-    protected $authCache;
+    protected $tokenCache;
 
     /**
      * @param array $config
      * @param \GuzzleHttp\Client $httpClient
-     * @param AuthCacheInterface $authCache
+     * @param TokenCacheInterface $tokenCache
      * @throws \RuntimeException
      */
-    public function __construct(array $config, \GuzzleHttp\Client $httpClient, AuthCacheInterface $authCache = null)
+    public function __construct(array $config, \GuzzleHttp\Client $httpClient, TokenCacheInterface $tokenCache = null)
     {
         if (empty($config['endpoint']) || empty($config['auth'])) {
             throw new \RuntimeException('endpoint and auth elements must be specified in the config');
@@ -42,7 +42,7 @@ class Client
 
         $this->config = $config;
         $this->httpClient = $httpClient;
-        $this->authCache = ($authCache) ? $authCache : new MemoryAuthCache();
+        $this->tokenCache = ($tokenCache) ? $tokenCache : new MemoryTokenCache();
     }
 
     /**
@@ -75,9 +75,9 @@ class Client
     /**
      * @return mixed
      */
-    protected function getAuthToken()
+    public function getAuthToken()
     {
-        if ($token = $this->authCache->getToken()) {
+        if ($token = $this->tokenCache->getToken()) {
             return $token;
         }
 
@@ -88,7 +88,7 @@ class Client
         );
 
         $result = $this->responseToResult($this->httpClient->send($request));
-        $this->authCache->cacheToken($result['token']);
+        $this->tokenCache->cacheToken($result['token']);
 
         return $result['token'];
     }
@@ -98,7 +98,7 @@ class Client
      * @return mixed
      * @throws \RuntimeException
      */
-    protected function responseToResult(ResponseInterface $response)
+    public function responseToResult(ResponseInterface $response)
     {
         $body = $response->json();
         $status = $response->getStatusCode();

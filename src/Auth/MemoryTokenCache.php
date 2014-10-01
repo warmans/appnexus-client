@@ -1,12 +1,12 @@
 <?php
-namespace ANClient\Client;
+namespace ANClient\Auth;
 
 /**
  * Just hold the auth token in memory for the duration of the scripts execution.
  *
  * @package ANClient\Http
  */
-class MemoryAuthCache implements AuthCacheInterface
+class MemoryTokenCache implements TokenCacheInterface
 {
     private $token = null;
 

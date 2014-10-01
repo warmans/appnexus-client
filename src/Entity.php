@@ -1,7 +1,7 @@
 <?php
 namespace ANClient;
 
-use ANClient\Client;
+use ANClient\Auth;
 use ANClient\Resource\AbstractResource;
 use ArrayAccess;
 

@@ -1,6 +1,5 @@
 <?php
 use ANClient\Resource\PublisherResource;
-use ANClient\Resource\SiteResource;
 
 $client = require_once __DIR__.'/client.php';
 

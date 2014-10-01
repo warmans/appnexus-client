@@ -1,8 +1,9 @@
 <?php
 namespace ANClient\Resource;
 
-use ANClient\Entity;
 use ANClient\Client;
+use ANClient\Entity;
+use ANClient\Auth;
 
 /**
  * @package ANClient\Resource

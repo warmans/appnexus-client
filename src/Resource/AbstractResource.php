@@ -110,7 +110,7 @@ abstract class AbstractResource
      * @return array
      * @throws \RuntimeException
      */
-    public function fetch(array $conditions = [], $limit=99, $offset=0)
+    public function fetch(array $conditions = [], $limit = 99, $offset = 0)
     {
         $result = $this->client->dispatch(
             'GET',
@@ -141,7 +141,7 @@ abstract class AbstractResource
     {
         $collection = array();
         $offset = 0;
-        while($more = $this->fetch($conditions, 99, $offset)) {
+        while ($more = $this->fetch($conditions, 99, $offset)) {
             $collection = array_merge($collection, $more);
             $offset += count($more);
         }

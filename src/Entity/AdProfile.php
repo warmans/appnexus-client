@@ -7,4 +7,5 @@ use ANClient\Resource\PlacementResource;
 use ANClient\Resource\SiteResource;
 
 class AdProfile extends Entity
-{}
+{
+}

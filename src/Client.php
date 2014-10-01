@@ -139,4 +139,4 @@ class Client
     {
         return rtrim($this->getConfig('endpoint'), '\\/ ').'/'.trim($resource, '\\/ ');
     }
-} 
+}

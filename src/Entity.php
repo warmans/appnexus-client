@@ -51,7 +51,12 @@ class Entity implements ArrayAccess, \JsonSerializable
          * if you changed something and PUT it back to the API the request could fail because a NULL field is validated
          * as an integer. Filtering out NULLs seems to make the most sense.
          */
-        $this->properties = array_filter($properties, function($val) { return $val !== null; });
+        $this->properties = array_filter(
+            $properties,
+            function ($val) {
+                return $val !== null;
+            }
+        );
     }
 
     /**
@@ -131,7 +136,7 @@ class Entity implements ArrayAccess, \JsonSerializable
     public function offsetSet($offset, $value)
     {
         //setting a key to null removes it from the object. See hydrate() comments.
-        if($value === null) {
+        if ($value === null) {
             unset($this[$offset]);
         } else {
             $this->properties[$offset] = $value;

@@ -72,14 +72,19 @@ abstract class AbstractResource
     }
 
     /**
+     * Store a NEW entity if it has no id otherwise perform an update.
+     *
      * @param \ANClient\Entity $entity
      * @param array $params
      * @return \ANClient\Entity
      */
     public function persist(Entity $entity, $params = [])
     {
+        //add id to update request
+        $params = $entity['id'] ? array_merge(['id' => $entity['id']]) : $params;
+
         $result = $this->client->dispatch(
-            'POST',
+            $entity['id'] ? 'PUT' : 'POST',
             $this->getPath(),
             ['query' => $params, 'json' => array($this->getSingularName() => $entity)]
         );

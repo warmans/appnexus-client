@@ -17,6 +17,7 @@ class Site extends Entity
     {
         $entity = parent::duplicate($resource);
 
+        //placement IDS will change so there's no point keeping them
         unset($entity['placements']);
 
         return $entity;

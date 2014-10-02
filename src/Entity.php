@@ -40,59 +40,18 @@ class Entity implements ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @param string $offset
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return isset($this->properties[$offset]);
-    }
-
-    /**
-     * @param string $offset
-     * @return mixed|null
-     */
-    public function offsetGet($offset)
-    {
-        return empty($this->properties[$offset]) ? null : $this->properties[$offset];
-    }
-
-    /**
-     * @param string $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value)
-    {
-        $this->properties[$offset] = $value;
-    }
-
-    /**
-     * @param string $offset
-     */
-    public function offsetUnset($offset)
-    {
-        unset($this->properties[$offset]);
-    }
-
-    /**
-     * Get a property of the entity
-     *
-     * @param $name
-     * @return mixed
-     */
-    public function getProperty($name)
-    {
-        return empty($this->properties[$name]) ? null : $this->properties[$name];
-    }
-
-    /**
      * Replace all properties with given array
      *
      * @param array $properties
      */
     public function hydrate(array $properties)
     {
-        $this->properties = $properties;
+        /**
+         * Filtering is required because when you request an entity it can return NULL values for fields. However
+         * if you changed something and PUT it back to the API the request could fail because a NULL field is validated
+         * as an integer. Filtering out NULLs seems to make the most sense.
+         */
+        $this->properties = array_filter($properties, function($val) { return $val !== null; });
     }
 
     /**
@@ -119,14 +78,6 @@ class Entity implements ArrayAccess, \JsonSerializable
     }
 
     /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return $this->properties;
-    }
-
-    /**
      * Shortcut to persist a resource
      *
      * @param array $params
@@ -146,14 +97,60 @@ class Entity implements ArrayAccess, \JsonSerializable
      */
     public function fetchChildren(AbstractResource $childResource, array $conditions = [], $limit = -1, $offset = 0)
     {
+        $conditions = array_merge([$this->resource->getIdName() => $this['id']], $conditions);
+
         if($limit === -1) {
-            return $childResource->fetchAll(array_merge([$this->resource->getIdName() => $this['id']], $conditions));
+            return $childResource->fetchAll($conditions);
         } else {
-            return $childResource->fetch(
-                array_merge([$this->resource->getIdName() => $this['id']], $conditions),
-                $limit,
-                $offset
-            );
+            return $childResource->fetch($conditions, $limit, $offset);
         }
+    }
+
+    /**
+     * @param string $offset
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return isset($this->properties[$offset]);
+    }
+
+    /**
+     * @param string $offset
+     * @return mixed|null
+     */
+    public function offsetGet($offset)
+    {
+        return empty($this->properties[$offset]) ? null : $this->properties[$offset];
+    }
+
+    /**
+     * @param string $offset
+     * @param mixed $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        //setting a key to null removes it from the object. See hydrate() comments.
+        if($value === null) {
+            unset($this[$offset]);
+        } else {
+            $this->properties[$offset] = $value;
+        }
+    }
+
+    /**
+     * @param string $offset
+     */
+    public function offsetUnset($offset)
+    {
+        unset($this->properties[$offset]);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return $this->properties;
     }
 }

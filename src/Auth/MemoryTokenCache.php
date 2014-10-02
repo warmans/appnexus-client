@@ -2,7 +2,7 @@
 namespace ANClient\Auth;
 
 /**
- * Just hold the auth token in memory for the duration of the scripts execution.
+ * Just hold the auth token in memory for the duration of the script execution.
  *
  * @package ANClient\Http
  */

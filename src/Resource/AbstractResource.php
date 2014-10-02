@@ -142,6 +142,13 @@ abstract class AbstractResource
         $offset = 0;
         while ($more = $this->fetch($conditions, 99, $offset)) {
             $collection = array_merge($collection, $more);
+
+            //if we returned less that the maximum we this must be the last page
+            if (count($more) < 99) {
+                return $collection;
+            }
+
+            //get next
             $offset += count($more);
         }
 

@@ -5,7 +5,7 @@ use ANClient\Resource\AbstractResource;
 use ArrayAccess;
 
 /**
- * Represents a single resource entity e,g, a publisher
+ * Represents a single resource entity e.g. a publisher
  *
  * @package ANClient
  */
@@ -140,26 +140,20 @@ class Entity implements ArrayAccess, \JsonSerializable
     /**
      * @param AbstractResource $childResource
      * @param array $conditions
-     * @param int $limit
+     * @param int $limit use -1 to return everything
      * @param int $offset
      * @return array
      */
-    public function fetchChildren(AbstractResource $childResource, array $conditions = [], $limit = 99, $offset = 0)
+    public function fetchChildren(AbstractResource $childResource, array $conditions = [], $limit = -1, $offset = 0)
     {
-        return $childResource->fetch(
-            array_merge([$this->resource->getIdName() => $this['id']], $conditions),
-            $limit,
-            $offset
-        );
-    }
-
-    /**
-     * @param AbstractResource $childResource
-     * @param array $conditions
-     * @return array
-     */
-    public function fetchAllChildren(AbstractResource $childResource, array $conditions = [])
-    {
-        return $childResource->fetchAll(array_merge([$this->resource->getIdName() => $this['id']], $conditions));
+        if($limit === -1) {
+            return $childResource->fetchAll(array_merge([$this->resource->getIdName() => $this['id']], $conditions));
+        } else {
+            return $childResource->fetch(
+                array_merge([$this->resource->getIdName() => $this['id']], $conditions),
+                $limit,
+                $offset
+            );
+        }
     }
 }

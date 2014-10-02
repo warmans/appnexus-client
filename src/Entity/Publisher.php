@@ -4,21 +4,22 @@ namespace ANClient\Entity;
 use ANClient\Entity;
 use ANClient\Resource\AbstractResource;
 use ANClient\Resource\AdQualityRuleResource;
+use ANClient\Resource\PaymentRuleResource;
 use ANClient\Resource\SiteResource;
 
 class Publisher extends Entity
 {
-    public function fetchSites(array $conditions = [], $limit = 99, $offset = 0)
+    public function fetchSites(array $conditions = [], $limit = -1, $offset = 0)
     {
-        return $this->fetchChildren(new SiteResource($this->resource->getClient()), $conditions, $limit, $offset);
+        return $this->fetchChildren(
+            new SiteResource($this->resource->getClient()),
+            $conditions,
+            $limit,
+            $offset
+        );
     }
 
-    public function fetchAllSites(array $conditions = [])
-    {
-        return $this->fetchAllChildren(new SiteResource($this->resource->getClient()), $conditions);
-    }
-
-    public function fetchAdQualityRules(array $conditions = [], $limit = 99, $offset = 0)
+    public function fetchAdQualityRules(array $conditions = [], $limit = -1, $offset = 0)
     {
         return $this->fetchChildren(
             new AdQualityRuleResource($this->resource->getClient()),
@@ -28,11 +29,13 @@ class Publisher extends Entity
         );
     }
 
-    public function fetchAllAdQualityRules(array $conditions = [])
+    public function fetchPaymentRules(array $conditions = [], $limit = -1, $offset = 0)
     {
-        return $this->fetchAllChildren(
-            new AdQualityRuleResource($this->resource->getClient()),
-            $conditions
+        return $this->fetchChildren(
+            new PaymentRuleResource($this->resource->getClient()),
+            $conditions,
+            $limit,
+            $offset
         );
     }
 

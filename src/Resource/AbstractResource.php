@@ -80,18 +80,23 @@ abstract class AbstractResource
      */
     public function persist(Entity $entity, $params = [])
     {
+    	$singularName = $this->getSingularName();
+
         //add id to update request
         $params = $entity['id'] ? array_merge(['id' => $entity['id']]) : $params;
 
         $result = $this->client->dispatch(
             $entity['id'] ? 'PUT' : 'POST',
             $this->getPath(),
-            ['query' => $params, 'json' => array($this->getSingularName() => $entity)]
+            ['query' => $params, 'json' => array($singularName => $entity)]
         );
 
-        //hydrate resource with id etc.
-        $entity->hydrate($result);
 
+        //hydrate resource with id etc.
+        if (isset($result[$singularName])) {
+	        $entity->hydrate($result);
+	    }
+	    
         return $entity;
     }
 

@@ -94,8 +94,8 @@ abstract class AbstractResource
 
         //hydrate resource with id etc.
         if (isset($result[$singularName])) {
-	        $entity->hydrate($result);
-	    }
+            $entity->hydrate($result[$singularName]);
+        }
 	    
         return $entity;
     }

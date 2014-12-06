@@ -39,7 +39,7 @@ $publisherResource = new PublisherResource($client);
 
 //fetch the first 10 publishers
 foreach ($publisherResource->fetch([], 10, 0) as $publisher) {
-    var_dump($publisher->fetchSites());
+    var_dump($publisher['id']);
 }
 ```
 

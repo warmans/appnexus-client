@@ -28,7 +28,7 @@ class Entity implements ArrayAccess, \JsonSerializable
     public function __construct(AbstractResource $resource, array $properties = [])
     {
         $this->resource = $resource;
-        $this->properties = $properties;
+        $this->hydrate($properties);
     }
 
     /**

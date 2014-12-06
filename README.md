@@ -73,6 +73,13 @@ var_dump($publisher->fetchChildren(new \ANClient\Resource\SiteResource($client))
 
 ```
 
+## Duplicating Entities
+
+This client was originally written to migrate publishers between appnexus accounts. As such entities have a duplicate
+method which attempts to create a new "clean" version of the entity with any inappropriate attributes stripped out e.g.
+IDs which might not exist in the new entity's account. AS such if you are simply duplicating entities for the SAME
+account it may be easier to just manually duplicate the entity and ONLY unset the entity ID.
+
 ## Auth Token Caching
 
 It may not be desirable to create a new token for every request as such tokens are stored via an implementation of the

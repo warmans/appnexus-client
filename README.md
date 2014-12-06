@@ -90,3 +90,7 @@ to implement the interface using redis, memcache or just file storage.
 
 Further examples are provided in the /examples directory.
 
+## Missing Resources
+
+Currently none of the reporting resources have been implemented. There is no good reason for this. I just haven't done
+it yet because I haven't needed to use them. Pull requests are welcome.

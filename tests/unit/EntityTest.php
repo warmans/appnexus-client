@@ -38,10 +38,16 @@ class EntityTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->object['foo']);
     }
 
-    public function testHydrateNullValueIsDiscarded()
+    public function testHydrateDicardsNullValues()
     {
         $this->object->hydrate(['foo'=>'bar', 'baz'=>null]);
         $this->assertEquals(['foo'=>'bar'], $this->object->toArray());
+    }
+
+    public function testHydrateViaConstructDiscardsNullValues()
+    {
+        $object = new Entity($this->resource, ['foo' => 'bar', 'baz' => null]);
+        $this->assertEquals(['foo'=>'bar'], $object->toArray());
     }
 
     public function testSetNullValueUnsetsKey()

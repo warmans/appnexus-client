@@ -14,7 +14,7 @@ This client attempts to represent the appnexus data available as a series of Res
 For example /publisher is the resource that returns a list of publisher objects. As such there is a PublisherResource
 which will return a list of Publisher Entity instances.
 
-```
+```php
 //log to stdout
 $log = new Logger('client');
 $log->pushHandler(new StreamHandler(STDOUT, Logger::DEBUG));
@@ -49,7 +49,7 @@ two examples should result in the same thing happening:
 
 Fetch using convenience method:
 
-```
+```php
 ...[create client etc]
 
 //create an instance of the publisher resource
@@ -62,7 +62,7 @@ var_dump($publisher->fetchSites());
 
 What actually happens:
 
-```
+```php
 ...[create client etc]
 
 //create an instance of the publisher resource

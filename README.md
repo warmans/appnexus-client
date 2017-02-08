@@ -8,7 +8,7 @@ PHP Appnexus API Client
 
 Client for use the non-public appnexus API.
 
-## Basic Useage
+## Basic Usage
 
 This client attempts to represent the appnexus data available as a series of Resources which return Entities.
 For example /publisher is the resource that returns a list of publisher objects. As such there is a PublisherResource
